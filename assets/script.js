@@ -41,5 +41,66 @@ function searchForCity(event) {
 }
 
 function displayCities(data){
-    console.log("in display cities");
+
+    if(data.length === 0){
+        var messageEl = $("<h1>");
+        messageEl.text("No results found")
+        $('#dialog').append(messageEl)
+        console.log(messageEl)
+       
+        
+    }
+    else{
+
+        for(i = 0; i < data.length; i++){
+            getDivs[i].textContent = data[i].name + ", " + data[i].state + " " + data[i].country;
+            getDivs[i].setAttribute('data-lat', data[i].lat)
+            getDivs[i].setAttribute('data-lon', data[i].lon)
+
+            
+        }
+        
+        for(var i = 0; i < getDivs.length; i++){
+
+            getDivs[i].addEventListener("mouseover", function(event){
+             // get the div currently moused over
+              var currentDiv = event.currentTarget;
+               currentDiv.style.backgroundColor = "green";
+               currentDiv.style.cursor = "pointer";
+             })
+
+             getDivs[i].addEventListener("mouseout", function(event){
+                var currentDiv = event.currentTarget;
+                currentDiv.style.backgroundColor = "white";
+                currentDiv.style.cursor = "pointer";
+              })
+
+              getDivs[i].addEventListener("click", function(event){
+                var currentDiv = event.currentTarget;
+                var getText = currentDiv.textContent;
+                var getLat = currentDiv.getAttribute("data-lat");
+                var getLon = currentDiv.getAttribute("data-lon"); 
+                console.log(getLat);
+                console.log(getText);
+                addToWatchlist(getText, getLat, getLon);
+             })
+
+
+        }
+
+    }
+    $('#dialog').dialog('open'); 
+    
 }
+
+function addToWatchlist(city, lat, lon){
+
+}
+
+$("#dialog").dialog({
+    modal: false,
+    autoOpen: false,
+    title: "Choose a city",
+    width: 300,
+    height: 300
+});
