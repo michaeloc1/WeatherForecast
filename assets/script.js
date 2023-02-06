@@ -3,9 +3,15 @@ var key2 = "a138a0d7c78cb87048e65ad82a95d9cd";
 var formEl = document.querySelector("form");
 var cityTextEl = document.querySelector("#city")
 var getDivs = document.querySelectorAll(".geoCities");
-console.log("geocities " + getDivs[0])
-console.log(formEl)
-console.log(cityTextEl);
+var watchlistArray = [];
+if(localStorage.getItem("watchlist") != null){
+    watchlistArray = JSON.parse(localStorage.getItem("watchlist"));
+    displayWatchlist();
+
+ }
+//console.log("geocities " + getDivs[0])
+//console.log(formEl)
+//console.log(cityTextEl);
 //"api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"
 lat = 51.5085;
 lon = -0.1257;
@@ -30,8 +36,9 @@ function searchForCity(event) {
 })
 .then(function (geoData) {
   // write query to page so user knows what they are viewing
+  cityTextEl.value = "";
   console.log(geoData);
-  displayCities(geoData)
+  displayCities(geoData);
 
 })
 .catch(function (error) {
@@ -41,6 +48,11 @@ function searchForCity(event) {
 }
 
 function displayCities(data){
+
+   for(let i = 0; i < getDivs.length; i++){
+    getDivs[i].textContent = ""
+   }
+
 
     if(data.length === 0){
         var messageEl = $("<h1>");
@@ -65,13 +77,11 @@ function displayCities(data){
             getDivs[i].addEventListener("mouseover", function(event){
              // get the div currently moused over
               var currentDiv = event.currentTarget;
-               currentDiv.style.backgroundColor = "green";
                currentDiv.style.cursor = "pointer";
              })
 
              getDivs[i].addEventListener("mouseout", function(event){
                 var currentDiv = event.currentTarget;
-                currentDiv.style.backgroundColor = "white";
                 currentDiv.style.cursor = "pointer";
               })
 
@@ -80,8 +90,9 @@ function displayCities(data){
                 var getText = currentDiv.textContent;
                 var getLat = currentDiv.getAttribute("data-lat");
                 var getLon = currentDiv.getAttribute("data-lon"); 
-                console.log(getLat);
-                console.log(getText);
+                //console.log(getLat);
+                //console.log(getText);
+                $('#dialog').dialog('close');
                 addToWatchlist(getText, getLat, getLon);
              })
 
@@ -94,6 +105,46 @@ function displayCities(data){
 }
 
 function addToWatchlist(city, lat, lon){
+
+    watchlistArray = jQuery.grep(watchlistArray , function (value) {
+        return value.city != city;
+      });
+
+    watchlistArray.push(
+        {
+            city: city,
+            lat: lat,
+            lon: lon
+
+        }
+
+    )
+
+    localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
+    displayWatchlist();
+  
+
+}
+
+function displayWatchlist(){
+    var getSection = document.querySelector(".watchlist");
+    var newArr = JSON.parse(localStorage.getItem("watchlist"));
+    newArr.reverse();
+    console.log(newArr.length)
+    while (getSection.firstChild) {
+        getSection.removeChild(getSection.firstChild);
+    }
+    for(i = 0; i < newArr.length; i++){
+      var makeButton = document.createElement("button");
+      makeButton.className = "watchlist-btn d-block btn btn-primary m-2";  
+      makeButton.textContent = newArr[i].city;
+      makeButton.setAttribute("data-lat", newArr[i].lat);
+      makeButton.setAttribute("data-lon", newArr[i].lon);
+      getSection.appendChild(makeButton);
+
+    }
+
+
 
 }
 
