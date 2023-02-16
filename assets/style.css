@@ -1,0 +1,13 @@
+.geoCities{
+background-color: blue;
+margin: 5px;
+color: white;
+padding: 5px;
+height: 40px;
+
+}
+
+#errMessage{
+    color:red;
+}
+

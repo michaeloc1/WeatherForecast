@@ -13,6 +13,9 @@
     <title>Document</title>
 </head>
 <body>
+  <nav class="navbar navbar-dark bg-primary justify-content-center">
+    <span class="navbar-brand mb-0 h1">5 DAY WEATHER FORCAST</span>
+  </nav>
     <form>
         <div class="form-group">
             <label for="fCity" class="m-2">Search for a city:</label><br>
@@ -20,6 +23,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary m-2">Submit</button>
+        <p id="errMessage" class="alert"></p>
 
       </form>
       <section class = "watchlist"></section>
@@ -28,11 +32,12 @@
  
 
       <div id="dialog" style="display: none" align = "center" class="modal">
-        <div class = "geoCities btn btn-primary m-2"></div>
-        <div class = "geoCities btn btn-primary m-2"></div>
-        <div class = "geoCities btn btn-primary m-2"></div>
-        <div class = "geoCities btn btn-primary m-2"></div>
-        <div class = "geoCities btn btn-primary m-2"></div>
+        
+        <div class = "geoCities btn btn-success"></div>
+        <div class = "geoCities"></div>
+        <div class = "geoCities"></div>
+        <div class = "geoCities"></div>
+        <div class = "geoCities"></div>
         
     </div>
 

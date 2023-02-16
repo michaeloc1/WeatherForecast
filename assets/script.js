@@ -3,6 +3,8 @@ var key2 = "a138a0d7c78cb87048e65ad82a95d9cd";
 var formEl = document.querySelector("form");
 var cityTextEl = document.querySelector("#city")
 var getDivs = document.querySelectorAll(".geoCities");
+var errMessageEl = document.querySelector("#errMessage");
+errMessageEl.style.display = "none"
 var watchlistArray = [];
 if(localStorage.getItem("watchlist") != null){
     watchlistArray = JSON.parse(localStorage.getItem("watchlist"));
@@ -23,6 +25,12 @@ formEl.addEventListener('submit', searchForCity);
 
 function searchForCity(event) {
     event.preventDefault();
+    errMessageEl.style.display = "none"
+    if(cityTextEl.value === ""){
+      errMessageEl.textContent = "Invalid input"
+      errMessageEl.style.display = "block"
+      return;
+    }
     var city = cityTextEl.value;
     var makeGeoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + key
     
@@ -56,9 +64,11 @@ function displayCities(data){
 
     if(data.length === 0){
         var messageEl = $("<h1>");
-        messageEl.text("No results found")
-        $('#dialog').append(messageEl)
-        console.log(messageEl)
+        //messageEl.text("No results found")
+        //$('#dialog').append(messageEl)
+        //console.log(messageEl)
+        errMessageEl.textContent = "No results found"
+        errMessageEl.style.display = "block"
        
         
     }
@@ -69,15 +79,17 @@ function displayCities(data){
             getDivs[i].setAttribute('data-lat', data[i].lat)
             getDivs[i].setAttribute('data-lon', data[i].lon)
 
+
             
         }
         
-        for(var i = 0; i < getDivs.length; i++){
+        
+        for(var i = 0; i < data.length; i++){
 
             getDivs[i].addEventListener("mouseover", function(event){
              // get the div currently moused over
               var currentDiv = event.currentTarget;
-               currentDiv.style.cursor = "pointer";
+              currentDiv.style.cursor = "pointer";
              })
 
              getDivs[i].addEventListener("mouseout", function(event){
@@ -94,13 +106,14 @@ function displayCities(data){
                 //console.log(getText);
                 $('#dialog').dialog('close');
                 addToWatchlist(getText, getLat, getLon);
+               
              })
 
 
         }
-
+        $('#dialog').dialog('open');
     }
-    $('#dialog').dialog('open'); 
+   // $('#dialog').dialog('open'); 
     
 }
 
@@ -136,7 +149,7 @@ function displayWatchlist(){
     }
     for(i = 0; i < newArr.length; i++){
       var makeButton = document.createElement("button");
-      makeButton.className = "watchlist-btn d-block btn btn-primary m-2";  
+      makeButton.className = "watchlist-btn d-block btn btn-secondary m-2";  
       makeButton.textContent = newArr[i].city;
       makeButton.setAttribute("data-lat", newArr[i].lat);
       makeButton.setAttribute("data-lon", newArr[i].lon);
@@ -149,9 +162,12 @@ function displayWatchlist(){
 }
 
 $("#dialog").dialog({
-    modal: false,
+    modal: true,
     autoOpen: false,
     title: "Choose a city",
     width: 300,
-    height: 300
+    height: 300,
+    fadeDuration: 300,
+    autoResize:true,
+    minHeight: 'auto'
 });
