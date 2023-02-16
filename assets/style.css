@@ -1,3 +1,6 @@
+body{
+    margin: 0;
+}
 .geoCities{
 background-color: blue;
 margin: 5px;
@@ -10,4 +13,18 @@ height: 40px;
 #errMessage{
     color:red;
 }
+#top-container{
+    margin: 0;
+    display:inline;
+}
 
+#forcast-container{
+    padding:0;
+}
+
+.card-body{
+    padding:0;
+}
+.format-card{
+    padding:0
+}
