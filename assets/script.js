@@ -158,6 +158,15 @@ function displayWatchlist(){
       makeButton.setAttribute("data-lon", newArr[i].lon);
       getSection.appendChild(makeButton);
 
+      makeButton.addEventListener("click", function(event){
+        var currentButton = event.currentTarget;
+        var buttonText = currentButton.textContent;
+        var buttonLat = currentButton.getAttribute("data-lat");
+        var buttonLon = currentButton.getAttribute("data-lon");
+        getCurrentWeather(buttonText, buttonLat, buttonLon);
+ 
+     })
+
     }
 
 
