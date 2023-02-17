@@ -15,10 +15,10 @@ if(localStorage.getItem("watchlist") != null){
 //console.log(formEl)
 //console.log(cityTextEl);
 //"api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"
-lat = 51.5085;
-lon = -0.1257;
-var weatherUrl = ""
-weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key
+//lat = 51.5085;
+//lon = -0.1257;
+//var weatherUrl = ""
+//weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key
 //getWeather(weatherUrl);
 
 formEl.addEventListener('submit', searchForCity);
@@ -106,7 +106,10 @@ function displayCities(data){
                 //console.log(getText);
                 $('#dialog').dialog('close');
                 addToWatchlist(getText, getLat, getLon);
-               
+                getCurrentWeather(getLat, getLon)
+                getWeather(getLat, getLon)
+               // getForcastWeather(getLat, getLon)
+
              })
 
 
@@ -159,6 +162,69 @@ function displayWatchlist(){
 
 
 
+}
+
+function getCurrentWeather(lat, lon){
+  //https://api.openweathermap.org/data/2.5/weather?lat=57&lon=-2.15&appid={API key}&units=imperial
+  var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" +lon + "&appid=" + key + "&units=imperial"
+  console.log(currentWeatherURL)
+  fetch(currentWeatherURL)
+  .then(function (response) {
+    if (!response.ok) {
+      throw response.json();
+    }
+  
+    return response.json();
+  })
+  .then(function (data) {
+    console.log(data)
+  
+  })
+  .catch(function (error) {
+    console.error(error);
+  });
+}
+
+function getForcastWeather(lat, lon){
+  var getForcastUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=5&appid=" + key + "&units=imperial";
+  console.log(getForcastUrl)
+  fetch(getForcastUrl)
+  .then(function (response) {
+    if (!response.ok) {
+      throw response.json();
+    }
+  
+    return response.json();
+  })
+  .then(function (data) {
+    console.log(data)
+  
+  })
+  .catch(function (error) {
+    console.error(error);
+  });
+  }
+
+function getWeather(lat, lon){
+  weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
+  console.log(weatherUrl)
+
+  fetch(weatherUrl)
+    .then(function (response) {
+      if (!response.ok) {
+        throw response.json();
+      }
+    
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data)
+    
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+  
 }
 
 $("#dialog").dialog({
