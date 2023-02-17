@@ -106,7 +106,7 @@ function displayCities(data){
                 //console.log(getText);
                 $('#dialog').dialog('close');
                 addToWatchlist(getText, getLat, getLon);
-                getCurrentWeather(getLat, getLon)
+                getCurrentWeather(getText, getLat, getLon)
                 getWeather(getLat, getLon)
                // getForcastWeather(getLat, getLon)
 
@@ -164,7 +164,7 @@ function displayWatchlist(){
 
 }
 
-function getCurrentWeather(lat, lon){
+function getCurrentWeather(city, lat, lon){
   //https://api.openweathermap.org/data/2.5/weather?lat=57&lon=-2.15&appid={API key}&units=imperial
   var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" +lon + "&appid=" + key + "&units=imperial"
   console.log(currentWeatherURL)
@@ -178,6 +178,8 @@ function getCurrentWeather(lat, lon){
   })
   .then(function (data) {
     console.log(data)
+    displayCurrentWeather(city, data);
+   
   
   })
   .catch(function (error) {
@@ -219,6 +221,7 @@ function getWeather(lat, lon){
     })
     .then(function (data) {
       console.log(data)
+      
     
     })
     .catch(function (error) {
@@ -226,6 +229,24 @@ function getWeather(lat, lon){
     });
   
 }
+
+function displayCurrentWeather(currentCity, currentData){
+   const currentCityEl = document.querySelector("#current-city");
+   const currentDate = new Date();
+   const currentDay = currentDate.getDate();
+   const currentMonth = currentDate.getMonth();
+   const currentYear = currentDate.getFullYear();
+   const currentDateString = " (" + currentMonth + "/" + currentDay + "/" + currentYear + ")";
+   const currentIconEl = document.querySelector("#current-icon");
+   currentIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + currentData.weather[0].icon + "@2x.png") 
+   currentCityEl.textContent = currentCity + currentDateString;
+   const currentTempEl = document.querySelector("#current-temp");
+   currentTempEl.textContent = "Temp: " + currentData.main.temp + "\u00B0" + "F";
+   const currentWindEl = document.querySelector("#current-wind");
+   currentWindEl.textContent = "Wind: " + currentData.wind.speed + " MPH";
+   const currentHumidityEl = document.querySelector("#current-humidity");
+   currentHumidityEl.textContent = "Humidity: " + currentData.main.humidity + "%";
+  }
 
 $("#dialog").dialog({
     modal: true,
