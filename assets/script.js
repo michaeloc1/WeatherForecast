@@ -243,16 +243,19 @@ function getWeather(lat, lon){
 
 function displayCurrentWeather(currentCity, currentData){
    const currentCityEl = document.querySelector("#current-city");
-   const currentDate = new Date();
-   const currentDay = currentDate.getDate();
-   const currentMonth = currentDate.getMonth();
-   const currentYear = currentDate.getFullYear();
-   const currentDateString = " (" + currentMonth + "/" + currentDay + "/" + currentYear + ")";
+   //const currentDate = new Date();
+   //const currentDay = currentDate.getDate();
+   ///const currentMonth = currentDate.getMonth();
+   //const currentYear = currentDate.getFullYear();
+   //let currentDateString = " (" + currentMonth + "/" + currentDay + "/" + currentYear + ")";
+
+   const currentDateString = " (" + dayjs().format("M/D/YYYY") + ")";
+
    const currentIconEl = document.querySelector("#current-icon");
    currentIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + currentData.weather[0].icon + "@2x.png") 
    currentCityEl.textContent = currentCity + currentDateString;
    const currentTempEl = document.querySelector("#current-temp");
-   currentTempEl.textContent = "Temp: " + currentData.main.temp + "\u00B0" + "F";
+   currentTempEl.textContent = "Temp: " + currentData.main.temp + "\u00B0" + " F";
    const currentWindEl = document.querySelector("#current-wind");
    currentWindEl.textContent = "Wind: " + currentData.wind.speed + " MPH";
    const currentHumidityEl = document.querySelector("#current-humidity");
@@ -265,18 +268,21 @@ function displayCurrentWeather(currentCity, currentData){
     var forcastWindEls = document.querySelectorAll(".forcast-wind");
     var forcastHumidityEls = document.querySelectorAll(".forcast-humidity");
     var cardHeaderEls = document.querySelectorAll(".card-header")
-    var counter = 0
+    var counter = 0;
+    
     for(let i = 0; i < forcastData.list.length; i++){
       //console.log(forcastData.list[i].dt_txt);
 
       var forcastDate = forcastData.list[i].dt_txt;
       if(forcastDate.includes("12:00:00")){
+        const forcastDateString = " (" + dayjs(forcastData.list[i].dt_txt).format("M/D/YYYY") + ")";
         //console.log(forcastData.list[i].dt_txt);
-        cardHeaderEls[counter].textContent = forcastData.list[i].dt_txt;
-        forcastTempEls[counter].textContent = "Temp: " + forcastData.list[i].main.temp;
+        //cardHeaderEls[counter].textContent = forcastData.list[i].dt_txt;
+        cardHeaderEls[counter].textContent = forcastDateString;
+        forcastTempEls[counter].textContent = "Temp: " + forcastData.list[i].main.temp + "\u00B0" + " F";
         forcastIconEls[counter].setAttribute("src", "http://openweathermap.org/img/wn/" + forcastData.list[i].weather[0].icon + ".png");
-        forcastWindEls[counter].textContent = "Wind: " + forcastData.list[i].wind.speed;
-        forcastHumidityEls[counter].textContent = "Humidity: " + forcastData.list[i].main.humidity;
+        forcastWindEls[counter].textContent = "Wind: " + forcastData.list[i].wind.speed + " MPH";
+        forcastHumidityEls[counter].textContent = "Humidity: " + forcastData.list[i].main.humidity + "%";
         counter++;
 
       }
