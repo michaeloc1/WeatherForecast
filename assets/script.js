@@ -164,6 +164,7 @@ function displayWatchlist(){
         var buttonLat = currentButton.getAttribute("data-lat");
         var buttonLon = currentButton.getAttribute("data-lon");
         getCurrentWeather(buttonText, buttonLat, buttonLon);
+        getWeather(buttonLat, buttonLon);
  
      })
 
@@ -230,6 +231,7 @@ function getWeather(lat, lon){
     })
     .then(function (data) {
       console.log(data)
+      displayForcast(data);
       
     
     })
@@ -255,6 +257,30 @@ function displayCurrentWeather(currentCity, currentData){
    currentWindEl.textContent = "Wind: " + currentData.wind.speed + " MPH";
    const currentHumidityEl = document.querySelector("#current-humidity");
    currentHumidityEl.textContent = "Humidity: " + currentData.main.humidity + "%";
+  }
+
+  function displayForcast(forcastData){
+    var forcastTempEls = document.querySelectorAll(".forcast-temp");
+    var forcastIconEls = document.querySelectorAll(".forcast-icon");
+    var forcastWindEls = document.querySelectorAll(".forcast-wind");
+    var forcastHumidityEls = document.querySelectorAll(".forcast-humidity");
+    var cardHeaderEls = document.querySelectorAll(".card-header")
+    var counter = 0
+    for(let i = 0; i < forcastData.list.length; i++){
+      //console.log(forcastData.list[i].dt_txt);
+
+      var forcastDate = forcastData.list[i].dt_txt;
+      if(forcastDate.includes("12:00:00")){
+        //console.log(forcastData.list[i].dt_txt);
+        cardHeaderEls[counter].textContent = forcastData.list[i].dt_txt;
+        forcastTempEls[counter].textContent = "Temp: " + forcastData.list[i].main.temp;
+        forcastIconEls[counter].setAttribute("src", "http://openweathermap.org/img/wn/" + forcastData.list[i].weather[0].icon + ".png");
+        forcastWindEls[counter].textContent = "Wind: " + forcastData.list[i].wind.speed;
+        forcastHumidityEls[counter].textContent = "Humidity: " + forcastData.list[i].main.humidity;
+        counter++;
+
+      }
+    }
   }
 
 $("#dialog").dialog({
