@@ -152,11 +152,35 @@ function displayWatchlist(){
     }
     for(i = 0; i < newArr.length; i++){
       var makeButton = document.createElement("button");
-      makeButton.className = "watchlist-btn d-block btn btn-secondary m-2";  
+      makeButton.className = "watchlist-btn btn btn-secondary m-2";  
       makeButton.textContent = newArr[i].city;
       makeButton.setAttribute("data-lat", newArr[i].lat);
       makeButton.setAttribute("data-lon", newArr[i].lon);
-      getSection.appendChild(makeButton);
+      //getSection.appendChild(makeButton);
+      var makeDeleteButton = document.createElement("button");
+      makeDeleteButton.className = "btn btn-danger"
+      //getSection.appendChild(makeDeleteButton);
+      makeDeleteButton.textContent = "X";
+      makeButton.style.display = "inline-block"
+      makeDeleteButton.style.display = "inline-block";
+      
+      var makeDiv = document.createElement("div");
+      getSection.appendChild(makeDiv)
+      makeDiv.appendChild(makeButton)
+      makeDiv.appendChild(makeDeleteButton)
+
+      makeDeleteButton.addEventListener("click", function(event){
+       var deleteText = this.previousSibling.textContent;
+       watchlistArray = jQuery.grep(watchlistArray , function (value) {
+        return value.city != deleteText;
+      });
+      localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
+        this.parentNode.removeChild( this.previousSibling );
+        this.remove();
+       //this.remove();
+     //  this.parentElement.style.display = 'none';
+
+      })
 
       makeButton.addEventListener("click", function(event){
         var currentButton = event.currentTarget;
