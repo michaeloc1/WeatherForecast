@@ -23,7 +23,7 @@ function searchForCity(event) {
       return;
     }
     var city = cityTextEl.value;
-    var makeGeoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + key
+    var makeGeoUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + key
     
     fetch(makeGeoUrl)
 .then(function (response) {
@@ -205,7 +205,7 @@ function getCurrentWeather(city, lat, lon){
 
 
 function getWeather(lat, lon){
-  weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
+  weatherUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
   console.log(weatherUrl)
 
   fetch(weatherUrl)
