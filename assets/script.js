@@ -232,7 +232,7 @@ function displayCurrentWeather(currentCity, currentData){
    const currentCityEl = document.querySelector("#current-city");
    const currentDateString = " (" + dayjs().format("M/D/YYYY") + ")";
    const currentIconEl = document.querySelector("#current-icon");
-   currentIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + currentData.weather[0].icon + "@2x.png") 
+   currentIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + currentData.weather[0].icon + "@2x.png") 
    currentCityEl.textContent = currentCity + currentDateString;
    const currentTempEl = document.querySelector("#current-temp");
    currentTempEl.textContent = "Temp: " + currentData.main.temp + "\u00B0" + " F";
@@ -257,7 +257,7 @@ function displayCurrentWeather(currentCity, currentData){
         const forcastDateString = " (" + dayjs(forcastData.list[i].dt_txt).format("M/D/YYYY") + ")";
         cardHeaderEls[counter].textContent = forcastDateString;
         forcastTempEls[counter].textContent = "Temp: " + forcastData.list[i].main.temp + "\u00B0" + " F";
-        forcastIconEls[counter].setAttribute("src", "http://openweathermap.org/img/wn/" + forcastData.list[i].weather[0].icon + ".png");
+        forcastIconEls[counter].setAttribute("src", "https://openweathermap.org/img/wn/" + forcastData.list[i].weather[0].icon + ".png");
         forcastWindEls[counter].textContent = "Wind: " + forcastData.list[i].wind.speed + " MPH";
         forcastHumidityEls[counter].textContent = "Humidity: " + forcastData.list[i].main.humidity + "%";
         counter++;
