@@ -11,15 +11,6 @@ if(localStorage.getItem("watchlist") != null){
     displayWatchlist();
 
  }
-//console.log("geocities " + getDivs[0])
-//console.log(formEl)
-//console.log(cityTextEl);
-//"api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"
-//lat = 51.5085;
-//lon = -0.1257;
-//var weatherUrl = ""
-//weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key
-//getWeather(weatherUrl);
 
 formEl.addEventListener('submit', searchForCity);
 
@@ -43,7 +34,7 @@ function searchForCity(event) {
   return response.json();
 })
 .then(function (geoData) {
-  // write query to page so user knows what they are viewing
+
   cityTextEl.value = "";
   console.log(geoData);
   displayCities(geoData);
@@ -64,9 +55,7 @@ function displayCities(data){
 
     if(data.length === 0){
         var messageEl = $("<h1>");
-        //messageEl.text("No results found")
-        //$('#dialog').append(messageEl)
-        //console.log(messageEl)
+
         errMessageEl.textContent = "No results found"
         errMessageEl.style.display = "block"
        
@@ -102,13 +91,11 @@ function displayCities(data){
                 var getText = currentDiv.textContent;
                 var getLat = currentDiv.getAttribute("data-lat");
                 var getLon = currentDiv.getAttribute("data-lon"); 
-                //console.log(getLat);
-                //console.log(getText);
                 $('#dialog').dialog('close');
                 addToWatchlist(getText, getLat, getLon);
                 getCurrentWeather(getText, getLat, getLon)
                 getWeather(getLat, getLon)
-               // getForcastWeather(getLat, getLon)
+
 
              })
 
@@ -116,7 +103,7 @@ function displayCities(data){
         }
         $('#dialog').dialog('open');
     }
-   // $('#dialog').dialog('open'); 
+
     
 }
 
@@ -156,10 +143,8 @@ function displayWatchlist(){
       makeButton.textContent = newArr[i].city;
       makeButton.setAttribute("data-lat", newArr[i].lat);
       makeButton.setAttribute("data-lon", newArr[i].lon);
-      //getSection.appendChild(makeButton);
       var makeDeleteButton = document.createElement("button");
       makeDeleteButton.className = "btn btn-danger"
-      //getSection.appendChild(makeDeleteButton);
       makeDeleteButton.textContent = "X";
       makeButton.style.display = "inline-block"
       makeDeleteButton.style.display = "inline-block";
@@ -177,8 +162,6 @@ function displayWatchlist(){
       localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
         this.parentNode.removeChild( this.previousSibling );
         this.remove();
-       //this.remove();
-     //  this.parentElement.style.display = 'none';
 
       })
 
@@ -199,7 +182,6 @@ function displayWatchlist(){
 }
 
 function getCurrentWeather(city, lat, lon){
-  //https://api.openweathermap.org/data/2.5/weather?lat=57&lon=-2.15&appid={API key}&units=imperial
   var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" +lon + "&appid=" + key + "&units=imperial"
   console.log(currentWeatherURL)
   fetch(currentWeatherURL)
@@ -221,25 +203,6 @@ function getCurrentWeather(city, lat, lon){
   });
 }
 
-function getForcastWeather(lat, lon){
-  var getForcastUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=5&appid=" + key + "&units=imperial";
-  console.log(getForcastUrl)
-  fetch(getForcastUrl)
-  .then(function (response) {
-    if (!response.ok) {
-      throw response.json();
-    }
-  
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data)
-  
-  })
-  .catch(function (error) {
-    console.error(error);
-  });
-  }
 
 function getWeather(lat, lon){
   weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
@@ -267,14 +230,7 @@ function getWeather(lat, lon){
 
 function displayCurrentWeather(currentCity, currentData){
    const currentCityEl = document.querySelector("#current-city");
-   //const currentDate = new Date();
-   //const currentDay = currentDate.getDate();
-   ///const currentMonth = currentDate.getMonth();
-   //const currentYear = currentDate.getFullYear();
-   //let currentDateString = " (" + currentMonth + "/" + currentDay + "/" + currentYear + ")";
-
    const currentDateString = " (" + dayjs().format("M/D/YYYY") + ")";
-
    const currentIconEl = document.querySelector("#current-icon");
    currentIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + currentData.weather[0].icon + "@2x.png") 
    currentCityEl.textContent = currentCity + currentDateString;
@@ -295,13 +251,10 @@ function displayCurrentWeather(currentCity, currentData){
     var counter = 0;
     
     for(let i = 0; i < forcastData.list.length; i++){
-      //console.log(forcastData.list[i].dt_txt);
 
       var forcastDate = forcastData.list[i].dt_txt;
       if(forcastDate.includes("12:00:00")){
         const forcastDateString = " (" + dayjs(forcastData.list[i].dt_txt).format("M/D/YYYY") + ")";
-        //console.log(forcastData.list[i].dt_txt);
-        //cardHeaderEls[counter].textContent = forcastData.list[i].dt_txt;
         cardHeaderEls[counter].textContent = forcastDateString;
         forcastTempEls[counter].textContent = "Temp: " + forcastData.list[i].main.temp + "\u00B0" + " F";
         forcastIconEls[counter].setAttribute("src", "http://openweathermap.org/img/wn/" + forcastData.list[i].weather[0].icon + ".png");
