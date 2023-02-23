@@ -5,6 +5,7 @@ var cityTextEl = document.querySelector("#city")
 var getDivs = document.querySelectorAll(".geoCities");
 var errMessageEl = document.querySelector("#errMessage");
 errMessageEl.style.display = "none"
+//store watchlist in an array if it exists and call display watchlist function
 var watchlistArray = [];
 if(localStorage.getItem("watchlist") != null){
     watchlistArray = JSON.parse(localStorage.getItem("watchlist"));
@@ -14,6 +15,7 @@ if(localStorage.getItem("watchlist") != null){
 
 formEl.addEventListener('submit', searchForCity);
 
+//will get lat and lon coordinates of city user enters and calls displaycities function
 function searchForCity(event) {
     event.preventDefault();
     errMessageEl.style.display = "none"
@@ -46,6 +48,11 @@ function searchForCity(event) {
 
 }
 
+//will display cities in a modal for user to choose one.  If no cities found
+//it will display message to user. I also give attributes of city name, lat
+//and lon so when the user clicks on a city the attributes are passed to
+//th functions that display the weather. Functions that are called are
+//addToWatchlist, getWeather, and getCurrentWeather
 function displayCities(data){
 
    for(let i = 0; i < getDivs.length; i++){
@@ -107,6 +114,8 @@ function displayCities(data){
     
 }
 
+//adds the city that user clicked on and stores it in local storage
+//along with the lat and lon. Calls displayWatchlist function
 function addToWatchlist(city, lat, lon){
 
     watchlistArray = jQuery.grep(watchlistArray , function (value) {
@@ -129,6 +138,12 @@ function addToWatchlist(city, lat, lon){
 
 }
 
+//displays the watchlist as buttons.  Gets the watchlist from local storage
+//reverses the array to display the last search first, sets attributes of
+//lat and lon to be used when the user clicks on a saved city. When a 
+//saved city is clicked on getCurrentWeather and getWeather are called
+//There is also a delete button made that allows user to delete saved
+//city from the watchlist.
 function displayWatchlist(){
     var getSection = document.querySelector(".watchlist");
     var newArr = JSON.parse(localStorage.getItem("watchlist"));
@@ -181,6 +196,8 @@ function displayWatchlist(){
 
 }
 
+//gets current weather from passed in lat and lon. City name is also passed
+//in but that just gets passed on to the displayCurrentWeather function
 function getCurrentWeather(city, lat, lon){
   var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" +lon + "&appid=" + key + "&units=imperial"
   console.log(currentWeatherURL)
@@ -203,7 +220,7 @@ function getCurrentWeather(city, lat, lon){
   });
 }
 
-
+//gets weather forcast from lat and lon and calls displayForcast
 function getWeather(lat, lon){
   weatherUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
   console.log(weatherUrl)
@@ -227,7 +244,9 @@ function getWeather(lat, lon){
     });
   
 }
-
+//displays the weather data into the html elements on the webpage
+//The data displayed is city, date, the icon of current weather
+//temp, wind, and humidity
 function displayCurrentWeather(currentCity, currentData){
    const currentCityEl = document.querySelector("#current-city");
    const currentDateString = " (" + dayjs().format("M/D/YYYY") + ")";
@@ -242,6 +261,12 @@ function displayCurrentWeather(currentCity, currentData){
    currentHumidityEl.textContent = "Humidity: " + currentData.main.humidity + "%";
   }
 
+  //displays the forcast in the html card elements on the webpage
+  //The data is for 5 days in three hour increments so I have to get
+  //it to display one per day.  I do this by checking the dt_txt in the
+  //data to see if it includes 12:00:00. If it does then I populate the 
+  //data onto the html elements.  I have 5 html elements to populate
+  //so I use a counter to increment the element
   function displayForcast(forcastData){
     var forcastTempEls = document.querySelectorAll(".forcast-temp");
     var forcastIconEls = document.querySelectorAll(".forcast-icon");
@@ -266,6 +291,7 @@ function displayCurrentWeather(currentCity, currentData){
     }
   }
 
+  //sets up modal that is used to display cities
 $("#dialog").dialog({
     modal: true,
     autoOpen: false,
