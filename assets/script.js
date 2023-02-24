@@ -38,7 +38,6 @@ function searchForCity(event) {
 .then(function (geoData) {
 
   cityTextEl.value = "";
-  console.log(geoData);
   displayCities(geoData);
 
 })
@@ -148,7 +147,6 @@ function displayWatchlist(){
     var getSection = document.querySelector(".watchlist");
     var newArr = JSON.parse(localStorage.getItem("watchlist"));
     newArr.reverse();
-    console.log(newArr.length)
     while (getSection.firstChild) {
         getSection.removeChild(getSection.firstChild);
     }
@@ -200,7 +198,6 @@ function displayWatchlist(){
 //in but that just gets passed on to the displayCurrentWeather function
 function getCurrentWeather(city, lat, lon){
   var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" +lon + "&appid=" + key + "&units=imperial"
-  console.log(currentWeatherURL)
   fetch(currentWeatherURL)
   .then(function (response) {
     if (!response.ok) {
@@ -210,7 +207,6 @@ function getCurrentWeather(city, lat, lon){
     return response.json();
   })
   .then(function (data) {
-    console.log(data)
     displayCurrentWeather(city, data);
    
   
@@ -223,8 +219,6 @@ function getCurrentWeather(city, lat, lon){
 //gets weather forcast from lat and lon and calls displayForcast
 function getWeather(lat, lon){
   weatherUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid="+ key + "&units=imperial"
-  console.log(weatherUrl)
-
   fetch(weatherUrl)
     .then(function (response) {
       if (!response.ok) {
@@ -234,7 +228,6 @@ function getWeather(lat, lon){
       return response.json();
     })
     .then(function (data) {
-      console.log(data)
       displayForcast(data);
       
     
